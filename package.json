@@ -15,7 +15,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rollup -c rollup.config.js",
-    "test": "vitest"
+    "test": "vitest",
+    "prepare": "pnpm build"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.2",
