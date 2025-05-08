@@ -89,4 +89,32 @@ describe('viteStyledComponentsMinify', () => {
 
     expect(result).toBeNull();
   });
+
+  it('should handle animation properties correctly', () => {
+    const code = `
+      import styled, { keyframes } from 'styled-components';
+      const fadeIn = keyframes\`
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      \`;
+      
+      const Component = styled.div\`
+        animation: \${fadeIn} 0.3s;
+      \`;
+    `;
+
+    const result = plugin.transform(code);
+
+    expect(result).not.toBeNull();
+    expect(result?.code).toBe(`
+      import styled, { keyframes } from 'styled-components';
+      const fadeIn = keyframes\`from{opacity:0;}to{opacity:1;}\`;
+      
+      const Component = styled.div\`animation:\${fadeIn} 0.3s;\`;
+    `);
+  });
 });

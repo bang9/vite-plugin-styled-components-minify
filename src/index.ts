@@ -29,10 +29,13 @@ export default function viteStyledComponentsMinify(): Plugin {
 
         const [compressed] = minifyRaw(templateContent);
 
+        // Ensure spacing after ${} when followed by a value like in animation:${xx} 0.3s
+        const fixedCompressed = compressed.replace(/animation:\$\{([^}]+)\}(?=\S)/g, 'animation:${$1} ');
+
         const start = match.index + matchedTag.length;
         const end = start + (fullMatch.length - matchedTag.length);
 
-        const newChunk = `\`${compressed}\``;
+        const newChunk = `\`${fixedCompressed}\``;
         s.overwrite(start, end, newChunk);
       }
 
